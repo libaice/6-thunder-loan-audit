@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity 0.8.20;
 
+
+// https://updraft.cyfrin.io/courses/security/thunder-loan/oracleupgradeable-continued?lesson_format=transcript
+
 import { ITSwapPool } from "../interfaces/ITSwapPool.sol";
 import { IPoolFactory } from "../interfaces/IPoolFactory.sol";
 import { Initializable } from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -15,7 +18,8 @@ contract OracleUpgradeable is Initializable {
     function __Oracle_init_unchained(address poolFactoryAddress) internal onlyInitializing {
         s_poolFactory = poolFactoryAddress;
     }
-
+        
+    //@audit oracle upgradeable manipulation
     function getPriceInWeth(address token) public view returns (uint256) {
         address swapPoolOfToken = IPoolFactory(s_poolFactory).getPool(token);
         return ITSwapPool(swapPoolOfToken).getPriceOfOnePoolTokenInWeth();
